@@ -40,8 +40,6 @@ public class MediaRecorderService extends MediaBrowserServiceCompat {
 
     private static final int NOTIFICATION_ID = 321;
 
-    private static final int MUSIC_RECOGNIZE_INTERVAL = 10000;
-
     public static final String REQUEST_TYPE = "REQUEST_TYPE";
     public static final String REQUEST_TYPE_START = "REQUEST_TYPE_START";
     public static final String REQUEST_TYPE_STOP = "REQUEST_TYPE_STOP";
@@ -99,7 +97,7 @@ public class MediaRecorderService extends MediaBrowserServiceCompat {
         }
 
         public void loadAndDisplayCoverArt(String coverArtUrl, ImageView imageView) {
-            musicRecognizer.loadAndDisplayCoverArt(coverArtUrl, imageView);
+            //musicRecognizer.loadAndDisplayCoverArt(coverArtUrl, imageView);
         }
     }
 
@@ -229,7 +227,7 @@ public class MediaRecorderService extends MediaBrowserServiceCompat {
     }
 
     private void startRecording() {
-        audioRecordTask = new AudioRecordTask(musicRecognizer.getGnMusicIdStream());
+        audioRecordTask = new AudioRecordTask();
         ConvertAudioTask convertAudioTask = new ConvertAudioTask();
 
         convertedAudioInputStream = convertAudioTask.getConvertedInputStream(
@@ -271,16 +269,13 @@ public class MediaRecorderService extends MediaBrowserServiceCompat {
     }
 
     private void startMusicRecognition() {
-        musicRecognizerTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                musicRecognizer.start();
-            }
-        }, 0, MUSIC_RECOGNIZE_INTERVAL);
+        musicRecognizer.start();
     }
 
     private void stopMusicRecognition() {
-        musicRecognizer.stop();
+        if (musicRecognizer != null) {
+            musicRecognizer.stop();
+        }
         musicRecognizerTimer.cancel();
     }
 

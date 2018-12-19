@@ -36,9 +36,6 @@ import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.Session;
 import com.google.android.gms.cast.framework.SessionManager;
 import com.google.android.gms.cast.framework.SessionManagerListener;
-import com.gracenote.gnsdk.GnAlbum;
-import com.gracenote.gnsdk.GnException;
-import com.gracenote.gnsdk.GnImageSize;
 import com.schober.vinylcast.service.MediaRecorderService;
 
 public class MainActivity extends AppCompatActivity {
@@ -273,44 +270,29 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Adds the provided album as a new row on the application display
-     * @throws GnException
      */
     private String currentTrack;
     private String currentAlbum;
     private String currentArtist;
 
-    public void updateMetaDataFields(final GnAlbum album) throws GnException {
-        String trackTitle = "";
-        if (album.trackMatched() != null) {
-            trackTitle = album.trackMatched().title().display();
-        }
-        String albumTitle = album.title().display();
-        String artist = album.trackMatched().artist().name().display();
-        //use album artist if track artist not available
-        if (artist.isEmpty()) {
-            artist = album.artist().name().display();
-        }
-
+    public void updateMetaDataFields(String trackTitle, String albumTitle, String artist) {
         currentTrack = trackTitle;
         currentAlbum = albumTitle;
         currentArtist = artist;
 
-        if (album == null) {
-            //coverArtImage.setVisibility(View.GONE);
-            //albumTextView.setVisibility(View.GONE);
-            //trackTextView.setVisibility(View.GONE);
+        if (albumTitle == null) {
+            coverArtImage.setVisibility(View.GONE);
+            albumTextView.setVisibility(View.GONE);
+            trackTextView.setVisibility(View.GONE);
             // Use the artist text field to display the error message
-            //artistText.setText("Music Not Identified");
+            artistTextView.setText("Music Not Identified");
         } else {
             // populate the display tow with metadata and cover art
             albumTextView.setText(albumTitle);
             artistTextView.setText(artist);
             trackTextView.setText(trackTitle);
 
-            String coverArtUrl = album.coverArt().asset(GnImageSize.kImageSizeSmall).url();
-
             binder.updateMetadata(trackTitle, albumTitle, artist, null);
-            binder.loadAndDisplayCoverArt(coverArtUrl, coverArtImage);
         }
     }
 
