@@ -23,7 +23,7 @@ import kaaes.spotify.webapi.android.SpotifyApi;
 
 public class MusicRecognizer implements IACRCloudListener {
     private static final String TAG = "MusicRecognizer";
-    public static final String ACCESS_KEY = "[ACCESS_KEY];
+    public static final String ACCESS_KEY = "[ACCESS_KEY]";
     public static final String ACCESS_SECRET = "[ACCESS_SECRET]";
     public static final String HOST = "identify-eu-west-1.acrcloud.com";
 
